@@ -29,8 +29,6 @@ const isHovering = ref(false) // 新增：是否鼠标悬停
 const isCountdownActive = ref(false) // 新增：是否激活倒计时模式
 const timerPosition = ref({ y: 80 }) // 悬浮框默认距离顶部80px
 const timerInterval = ref<number | null>(null)
-// 用于存储定时上报的计时器ID
-const reportInterval = ref<number | null>(null)
 const lastReportTime = ref(0) // 上次上报的时间
 const currentTimerMode = ref(timerMode.value) // 当前计时器模式
 const currentTimerType = ref(timerType.value) // 当前计时器类型
@@ -502,21 +500,18 @@ onMounted(async () => {
   })
 
   // 每隔30秒上报一次数据，以防异常关闭
-  reportInterval.value = setInterval(async () => {
+  const reportInterval = setInterval(async () => {
     // 检查扩展上下文是否有效
     if (browser.runtime && typeof browser.runtime.id !== 'undefined') {
       await reportTimeSpent()
     }
-  }, 30000) as unknown as number
-})
+  }, 30000)
 
-// 必须在setup顶层调用生命周期钩子
-onUnmounted(() => {
-  if (reportInterval.value !== null) {
-    clearInterval(reportInterval.value)
-    reportInterval.value = null
-  }
-  stopTimer()
+  // 组件卸载时清理
+  onUnmounted(() => {
+    clearInterval(reportInterval)
+    stopTimer()
+  })
 })
 </script>
 

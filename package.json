@@ -1,10 +1,10 @@
 {
-  "name": "vitesse-webext",
-  "displayName": "Vitesse WebExt",
+  "name": "friend-timer",
+  "displayName": "FriendTimer",
   "version": "0.0.1",
   "private": true,
   "packageManager": "pnpm@9.7.1",
-  "description": "[description]",
+  "description": "用于记录和分析用户在浏览器中花费时间的工具",
   "scripts": {
     "dev": "npm run clear && cross-env NODE_ENV=development run-p dev:*",
     "dev-firefox": "npm run clear && cross-env NODE_ENV=development EXTENSION=firefox run-p dev:*",
